@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +48,21 @@ Route::get('/ ','ProductController@autoComplete')->name('autocomplete');
 // Zip create
 Route::get('/zip','ZipController@zipFile');
 Route::get('/yajra','YajraController@index')->name('yajra.data');
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+
+
+
+
+
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+Route::group(['middleware' => ['auth:sanctum','verified']], function () {
+    Route::get('/dashboard', function ()    {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('users','UserController@getUsers')->name('user.list');
+    Route::put('/like-user','UserController@likeUser')->name('like.user');
+    Route::put('/unlike-user','UserController@unlikeUser')->name('unlike.user');
+});
